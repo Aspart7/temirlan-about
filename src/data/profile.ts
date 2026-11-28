@@ -7,14 +7,40 @@ export const LOCALES: { code: Locale; label: string; native: string }[] = [
   { code: "zh", label: "ZH", native: "中文" },
 ];
 
-export interface ProjectItem {
+export const LIVE_FUNNELLENS_URL = "https://funnellens-pied.vercel.app";
+export const LIVE_LEDGERLANE_REPORT_URL = "https://funnellens-pied.vercel.app/audit/ledgerlane";
+
+export interface DemoPinItem {
+  number: number;
+  ruleId: string;
+  severity: "critical" | "warning" | "tip";
+  penalty: number;
+  xPct: number;
+  yPct: number;
+  wPct: number;
+  hPct: number;
+  originalText: string;
+  title: string;
+  reason: string;
+  replacement: string;
+}
+
+export interface EngineeringDecision {
+  id: string;
+  title: string;
+  fileHint: string;
+  summary: string;
+  detail: string;
+}
+
+export interface SecondaryProjectItem {
   id: string;
   title: string;
   tag: string;
   period: string;
-  featured?: boolean;
-  summary: string;
-  highlights: string[];
+  task: string;
+  contribution: string;
+  result: string;
   stack: string[];
   repoUrl?: string;
 }
@@ -35,8 +61,8 @@ export interface CertificateItem {
 
 export interface LocaleContent {
   nav: {
-    about: string;
     projects: string;
+    decisions: string;
     education: string;
     learning: string;
     cmdHint: string;
@@ -44,14 +70,48 @@ export interface LocaleContent {
   hero: {
     badge: string;
     name: string;
-    headline: string;
+    roleStatement: string;
     subheadline: string;
-    location: string;
+    ctaProjects: string;
     ctaGithub: string;
     ctaTelegram: string;
     ctaCopyEmail: string;
     copiedEmail: string;
     copiedTelegram: string;
+    location: string;
+    previewLabel: string;
+    previewTitle: string;
+    previewScore: string;
+    previewSampleNote: string;
+    previewAction: string;
+  };
+  flagship: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    demoNote: string;
+    openFullReport: string;
+    openLiveApp: string;
+    viewGithub: string;
+    pinsInstruction: string;
+    tabDemo: string;
+    tabArchitecture: string;
+    originalLabel: string;
+    reasonLabel: string;
+    replacementLabel: string;
+    penaltyLabel: string;
+    pins: DemoPinItem[];
+    decisionsTitle: string;
+    decisions: EngineeringDecision[];
+  };
+  otherProjects: {
+    title: string;
+    subtitle: string;
+    taskLabel: string;
+    contributionLabel: string;
+    resultLabel: string;
+    openRepo: string;
+    items: SecondaryProjectItem[];
   };
   about: {
     title: string;
@@ -60,13 +120,6 @@ export interface LocaleContent {
     languages: { name: string; level: string }[];
     beyondCodeTitle: string;
     beyondCode: string[];
-  };
-  projectsSection: {
-    title: string;
-    subtitle: string;
-    featuredBadge: string;
-    viewRepo: string;
-    items: ProjectItem[];
   };
   educationSection: {
     title: string;
@@ -85,6 +138,8 @@ export interface LocaleContent {
     goals: { title: string; detail: string }[];
     interestsTitle: string;
     interests: string[];
+    contactBannerTitle: string;
+    contactBannerSub: string;
   };
   palette: {
     placeholder: string;
@@ -97,6 +152,7 @@ export interface LocaleContent {
     copyEmail: string;
     copyTelegram: string;
     openGithub: string;
+    openFunnelLens: string;
     closeHint: string;
   };
   footer: string;
@@ -132,80 +188,164 @@ const SHARED_CERTS: CertificateItem[] = [
 export const PROFILE_CONTENT: Record<Locale, LocaleContent> = {
   ru: {
     nav: {
-      about: "О себе",
       projects: "Проекты",
+      decisions: "Решения",
       education: "Обучение",
       learning: "Цели",
       cmdHint: "Поиск",
     },
     hero: {
-      badge: "Открыт к стажировке AI Developer Intern · SkyWhisper & MonoLotus",
+      badge: "AI Product & Security · 3 курс Astana IT University",
       name: "Темирлан Рахым",
-      headline:
-        "Студент 3 курса кибербезопасности, который быстро собирает рабочие AI и веб-продукты.",
+      roleStatement:
+        "Проектирую и довожу до продакшена веб-продукты с AI, чёткими правилами и сетевой защитой.",
       subheadline:
-        "Совмещаю инженерную дисциплину (Git, PR, тесты, безопасность) с современной AI-разработкой на Next.js, TypeScript и Python.",
-      location: "Астана, Казахстан · Удалённо",
+        "От мультиязычных Next.js-интерфейсов с DOM-аудитом конверсии до Docker-сервисов и CLI-сканеров HTTP-безопасности — с чистой Git-историей и тестами.",
+      ctaProjects: "Посмотреть проекты",
       ctaGithub: "GitHub @Aspart7",
       ctaTelegram: "Telegram @yobxes",
       ctaCopyEmail: "Скопировать Email",
-      copiedEmail: "Email скопирован",
+      copiedEmail: "Email tamerlanrakhim135@gmail.com скопирован",
       copiedTelegram: "Telegram @yobxes скопирован",
+      location: "Астана · Удалённо",
+      previewLabel: "Главный кейс · Нажмите ниже для разбора",
+      previewTitle: "FunnelLens — аудит первого экрана",
+      previewScore: "68 / 100",
+      previewSampleNote: "Пример разбора LedgerLane без регистрации и API-ключа",
+      previewAction: "Открыть интерактивный разбор",
     },
-    about: {
-      title: "Коротко обо мне",
-      paragraphs: [
-        "Учусь на 3 курсе в Astana IT University на англоязычной программе по кибербезопасности. Мне нравится не просто изучать теорию, а быстро превращать идеи в понятные продукты, которые можно открыть в браузере и проверить в деле.",
-        "За последний год успел поработать в IT-поддержке и AI-лаборатории колледжа, выступить на хакатоне Decentrathon 6.0 в треке AI Engineering и собрать несколько открытых инструментов — от аудитора конверсии лендингов на Next.js до Docker-сервисов и CLI-сканера HTTP-безопасности.",
-      ],
-      languagesTitle: "Языки",
-      languages: [
-        { name: "Русский", level: "Родной (C2)" },
-        { name: "Казахский", level: "Продвинутый (C1)" },
-        { name: "Английский", level: "Upper-Intermediate (B2)" },
-        { name: "Китайский", level: "Базовый (учёба в AIU / UIBE)" },
-      ],
-      beyondCodeTitle: "Интересы вне кода",
-      beyondCode: [
-        "Продуктовый UX и локализация интерфейсов на разные языки",
-        "Сборные AITU по баскетболу и армрестлингу",
-        "Исследование AI-инструментов ускорения разработки",
-      ],
-    },
-    projectsSection: {
-      title: "Проекты и опыт",
-      subtitle: "Реальные репозитории с тестами, чистой Git-историей и практическим результатом.",
-      featuredBadge: "Флагман под стек компании",
-      viewRepo: "Открыть на GitHub",
-      items: [
+    flagship: {
+      eyebrow: "Главный кейс · Стек SkyWhisper & MonoLotus",
+      title: "FunnelLens — AI-аудитор конверсии первого экрана",
+      subtitle:
+        "Снимает первый экран 1280×800 и карту DOM-элементов, находит места, где посетитель вынужден гадать, ставит кликабельные пины прямо поверх макета и предлагает переписанный Hero.",
+      demoNote:
+        "Ниже — интерактивный пример «LedgerLane» из публичной демо-базы (работает прямо здесь без API-ключа и входа).",
+      openFullReport: "Открыть полный отчёт",
+      openLiveApp: "Открыть FunnelLens",
+      viewGithub: "Код и PR на GitHub",
+      pinsInstruction: "Выбирайте пины кликом, касанием или клавишами ← →",
+      tabDemo: "Интерактивные пины",
+      tabArchitecture: "Инженерные решения",
+      originalLabel: "Исходный текст на экране",
+      reasonLabel: "Причина замечания",
+      replacementLabel: "Конкретная замена",
+      penaltyLabel: "штраф",
+      pins: [
         {
-          id: "funnellens",
-          title: "FunnelLens — AI-аудитор первого экрана лендингов",
-          tag: "Product MVP · Next.js + i18n",
-          period: "Ноябрь 2026",
-          featured: true,
-          summary:
-            "Веб-продукт, который разбирает первый экран лендинга по 12 продуктовым правилам, ставит кликабельные пины прямо поверх скриншота и предлагает переписанный Hero («До / После»).",
-          highlights: [
-            "Строгая 100-балльная модель оценки (6 категорий, Zod-схемы и SSRF-защита URL)",
-            "Интерактивный канвас с пинами по координатам DOM и мультиязычный UI (EN / RU / KK / ZH / ES)",
-            "Разработка по отдельным веткам, Pull Request'ам и CI-проверкам",
-          ],
-          stack: ["Next.js", "TypeScript", "Tailwind CSS", "Zod", "Vitest", "Firebase", "Trigger.dev", "Stripe"],
-          repoUrl: "https://github.com/Aspart7/funnellens",
+          number: 1,
+          ruleId: "hierarchy.rivals",
+          severity: "warning",
+          penalty: 10,
+          xPct: 6.25,
+          yPct: 55.5,
+          wPct: 34,
+          hPct: 6.5,
+          originalText: "«Start 14-day trial» и «Book a live call» (равный вес)",
+          title: "Две одинаково яркие кнопки ведут к разным обязательствам",
+          reason:
+            "Рядом стоят равноправные кнопки без пояснения, кому нужен самостоятельный триал, а кому — созвон с продажами. Посетитель тормозит перед выбором.",
+          replacement:
+            "Оставить одну главную залитую кнопку «Preview approval rules», а созвон убрать в текстовую ссылку для крупных команд.",
         },
+        {
+          number: 2,
+          ruleId: "friction.fields",
+          severity: "warning",
+          penalty: 8,
+          xPct: 6.25,
+          yPct: 45.5,
+          wPct: 28,
+          hPct: 6,
+          originalText: "Work phone * (+1 555 014-2200)",
+          title: "Обязательный телефон до показа самого продукта",
+          reason:
+            "Поле в hero требует рабочий номер, хотя посетитель всего лишь хочет посмотреть интерактивное превью. Ожидание холодного звонка вызывает отказ.",
+          replacement:
+            "Убрать обязательный телефон с первого экрана, оставив только рабочий email или мгновенное демо без регистрации.",
+        },
+        {
+          number: 3,
+          ruleId: "action.label",
+          severity: "warning",
+          penalty: 8,
+          xPct: 35.5,
+          yPct: 45.5,
+          wPct: 14.5,
+          hPct: 6,
+          originalText: "Continue",
+          title: "Подпись кнопки «Continue» скрывает результат клика",
+          reason:
+            "Под полем контакта кнопка не сообщает, что будет дальше: мгновенная песочница, длинная регистрация или форма оплаты.",
+          replacement:
+            "Заменить подпись «Continue» на «Open sample approval flow», чтобы посетитель точно знал следующий экран.",
+        },
+        {
+          number: 4,
+          ruleId: "proof.claim",
+          severity: "warning",
+          penalty: 6,
+          xPct: 6.25,
+          yPct: 14.5,
+          wPct: 26,
+          hPct: 4.5,
+          originalText: "3× faster monthly close for finance",
+          title: "Численное обещание «3× faster» без базы сравнения",
+          reason:
+            "Плашка вверху заявляет трёхкратное ускорение, но рядом нет ни точки отсчёта (по сравнению с чем), ни ссылки на кейс.",
+          replacement:
+            "Добавить конкретную базу («вместо согласования по почте») и ссылку на кейс или заменить плашку проверяемым фактом.",
+        },
+      ],
+      decisionsTitle: "Ключевые инженерные решения (подтверждено кодом)",
+      decisions: [
+        {
+          id: "dom-pins",
+          title: "1. Привязка замечаний AI к реальному DOM",
+          fileHint: "src/lib/auditor/rubric.ts · capture.ts",
+          summary:
+            "Модель не угадывает координаты в пикселях «на глаз», а выбирает реальный elementId из снимка DOM.",
+          detail:
+            "Playwright снимает кадр 1280×800 и карту координат видимых узлов в процентах. Если AI вернёт несуществующий ID, normalizeAndScoreAudit автоматически привязывает пин к зарегистрированному viewport-якорю.",
+        },
+        {
+          id: "server-score",
+          title: "2. Итоговый score считает сервер по 12 правилам",
+          fileHint: "src/lib/auditor/schema.ts · rubric.ts",
+          summary:
+            "LLM отвечает только за наблюдения, а балл 0–100 и совместимость правил проверяет строгий TypeScript-движок.",
+          detail:
+            "Штраф за одно правило списывается максимум раз, при отсутствии CTA (action.entry) подавляются вторичные проверки подписи/иерархии, а структура ответа валидируется через Zod .strict().",
+        },
+        {
+          id: "ssrf-guard",
+          title: "3. Сетевая защита (SSRF) при захвате и ресурсах",
+          fileHint: "src/lib/auditor/url-safety.ts · capture.ts",
+          summary:
+            "Любой URL и каждый подзапрос страницы проверяется до обращения в сеть.",
+          detail:
+            "Разрешены только http/https без embedded-учёток. Блокируются localhost, *.internal, loopback, link-local, RFC1918, а также hex-нормализованные IPv4-mapped IPv6 адреса вроде ::ffff:7f00:1 и перенаправления Playwright.",
+        },
+      ],
+    },
+    otherProjects: {
+      title: "Другие проекты и практический опыт",
+      subtitle: "Задача, личный вклад, измеримый или проверяемый результат и ссылка на код.",
+      taskLabel: "Задача",
+      contributionLabel: "Мой вклад",
+      resultLabel: "Результат",
+      openRepo: "Репозиторий",
+      items: [
         {
           id: "web-auditor",
           title: "Web Security Headers Auditor",
           tag: "Security CLI · Python",
           period: "2026",
-          summary:
-            "Автономный Python CLI-инструмент (без внешних зависимостей) для аудита OWASP HTTP-заголовков, флагов cookies, CORS и TLS с оценкой 0–100 и HTML/JSON-отчётами.",
-          highlights: [
-            "Включает локальный стенд /vulnerable и /hardened для воспроизводимых проверок",
-            "Покрыт модульными тестами unittest",
-          ],
-          stack: ["Python", "HTTP/TLS", "OWASP", "HTML/JSON", "unittest"],
+          task: "Сделать лёгкий инструмент аудита базовой веб-гигиены HTTP-ответов без тяжёлых внешних зависимостей.",
+          contribution:
+            "Реализовал модули проверки OWASP-заголовков, флагов cookies, отражения CORS и TLS на чистой стандартной библиотеке Python плюс локальный стенд /vulnerable и /hardened.",
+          result: "Оценка 0–100 (A+–F), HTML/JSON-отчёты и 4 пройденных unit-теста unittest.",
+          stack: ["Python", "HTTP/TLS", "OWASP", "unittest"],
           repoUrl: "https://github.com/Aspart7/web-security-auditor",
         },
         {
@@ -213,12 +353,10 @@ export const PROFILE_CONTENT: Record<Locale, LocaleContent> = {
           title: "Telegram Audit Archiver",
           tag: "Backend Service · Docker",
           period: "2026",
-          summary:
-            "Контейнеризованный сервис на Python + Telethon + SQLite для аудита и архивации событий в модерируемых чатах с автоматической очисткой по TTL.",
-          highlights: [
-            "Секреты вынесены в переменные окружения, потокобезопасная работа с SQLite и non-root Dockerfile",
-            "Покрыт модульными тестами жизненного цикла хранения",
-          ],
+          task: "Организовать воспроизводимый аудит и хранение истории сообщений в модерируемых чатах с автоочисткой.",
+          contribution:
+            "Спроектировал сервис на Telethon и потокобезопасном SQLite с очисткой по TTL, HTML-экранированием и non-root Dockerfile (все токены только через env).",
+          result: "Автономный контейнер с 4 модульными тестами хранения и очистки TTL.",
           stack: ["Python", "Telethon", "SQLite", "Docker"],
           repoUrl: "https://github.com/Aspart7/telegram-audit-archiver",
         },
@@ -226,50 +364,66 @@ export const PROFILE_CONTENT: Record<Locale, LocaleContent> = {
           id: "decentrathon",
           title: "Decentrathon 6.0 — Soup Kernel Challenge (Team Toak)",
           tag: "AI Engineering · Astana Hub",
-          period: "Октябрь 2026",
-          summary:
-            "Трек AI Engineering: настройка запусков на Kaggle T4 и профилирование скорости и видеопамяти при QLoRA дообучении Qwen2.",
-          highlights: [
-            "Команда достигла ускорения в 1.72× и снижения потребления VRAM в 13.7× (~1 ГБ) при сохранении точности",
-          ],
-          stack: ["Python", "PyTorch", "QLoRA", "Qwen2", "Benchmarking"],
+          period: "Окт 2026",
+          task: "Ускорить и ужать по видеопамяти QLoRA-дообучение Qwen2 на ограниченных GPU Kaggle T4.",
+          contribution:
+            "Настраивал воспроизводимые прогоны на T4, снимал профили времени выполнения и пикового потребления VRAM между итерациями команды.",
+          result: "Команда добилась ускорения в 1.72× и снижения VRAM в 13.7× (~1 ГБ) без потери точности.",
+          stack: ["Python", "PyTorch", "QLoRA", "Qwen2"],
         },
         {
           id: "college-intern",
           title: "Стажёр IT-поддержки и AI-проектов — ТОО «Колледж управления»",
           tag: "Стажировка · Астана",
           period: "Лето 2026",
-          summary:
-            "Настройка и поддержка 10+ рабочих станций Windows и корпоративных LLM-аккаунтов в AI-лаборатории, структурирование учебных датасетов и помощь с силлабусами.",
-          highlights: [
-            "Поддержка пользователей и быстрая диагностика рабочих окружений",
-            "Применение LLM-инструментов для систематизации таблиц успеваемости",
-          ],
-          stack: ["Windows", "PowerShell", "LLM Tools", "Data Tables"],
+          task: "Обеспечить стабильную работу рабочих мест в AI-лаборатории и навести порядок в учебных таблицах.",
+          contribution:
+            "Настроил и обслуживал 10+ рабочих станций Windows и корпоративные LLM-аккаунты; систематизировал таблицы успеваемости и помогал со структурой силлабусов.",
+          result: "Рабочая инфраструктура лаборатории и упорядоченные учебные датасеты.",
+          stack: ["Windows", "PowerShell", "LLM Tools", "Data Hygiene"],
         },
+      ],
+    },
+    about: {
+      title: "Коротко обо мне",
+      paragraphs: [
+        "Учусь на 3 курсе Astana IT University (программа по кибербезопасности на английском языке). Люблю стык продуктового интерфейса и инженерной надёжности: чтобы кнопка в UI срабатывала мгновенно, а под капотом были тесты, схемы валидации и чистый Git.",
+        "Пишу код в связке с современными AI-инструментами (Antigravity, Claude Code), умею читать чужие репозитории, находить ошибки и доводить фичи до живого URL.",
+      ],
+      languagesTitle: "Языки",
+      languages: [
+        { name: "Русский", level: "Родной (C2)" },
+        { name: "Казахский", level: "Продвинутый (C1)" },
+        { name: "Английский", level: "Upper-Intermediate (B2)" },
+        { name: "Китайский", level: "Базовый (AIU / UIBE)" },
+      ],
+      beyondCodeTitle: "Вне кода",
+      beyondCode: [
+        "UX и аккуратная локализация на несколько языков",
+        "Сборные AITU по баскетболу и армрестлингу",
       ],
     },
     educationSection: {
       title: "Образование и сертификаты",
-      subtitle: "Бакалавриат на английском языке и профильные подтверждённые курсы.",
+      subtitle: "Бакалавриат на английском языке и проверяемые ссылки.",
       items: [
         {
           school: "Astana IT University (AITU)",
-          degree: "Бакалавриат: Кибербезопасность (обучение на английском языке)",
+          degree: "Бакалавриат: Кибербезопасность (на английском языке)",
           period: "2024 — Июнь 2027 (3 курс)",
-          note: "Фокус: сетевая безопасность, веб-приложения, системное программирование и прикладной AI.",
+          note: "Сетевая и веб-безопасность, анализ процессов, системное и прикладное программирование.",
         },
         {
           school: "Astana International University (AIU) × UIBE (Пекин)",
-          degree: "Международная торговля (программа двойного диплома, 1 курс)",
+          degree: "Международная торговля (Double-Degree, 1 курс)",
           period: "2023 — 2024",
-          note: "Интенсивная база по деловому английскому и начальному китайскому языку перед переводом в IT.",
+          note: "Интенсив по английскому и начальному китайскому перед переводом в IT.",
         },
         {
-          school: "Астана БІЛІМ-ИННОВАЦИЯ лицейі для одарённых юношей (БИЛ)",
-          degree: "Среднее образование (физико-математический профиль)",
+          school: "Астана БІЛІМ-ИННОВАЦИЯ лицейі (БИЛ)",
+          degree: "Среднее образование (STEM)",
           period: "Выпуск 2023",
-          note: "Обучение на английском/казахском по профильным предметам.",
+          note: "Профильная математика и физика на английском/казахском.",
         },
       ],
       certsTitle: "Подтверждённые сертификаты",
@@ -278,83 +432,263 @@ export const PROFILE_CONTENT: Record<Locale, LocaleContent> = {
     },
     learningSection: {
       title: "Чему хочу научиться в SkyWhisper и MonoLotus",
-      subtitle: "Осознанный вектор роста на ближайшие месяцы в продуктовой AI-команде.",
-      whyTitle: "Почему мне интересна именно эта команда",
+      subtitle: "Конкретные навыки, которые хочу развить, выпуская фичи в продакшен.",
+      whyTitle: "Почему мне интересна команда",
       whyText:
-        "Мне близка идея быстрого выпуска реальных фич для пользователей по всему миру на 20+ языках. Я хочу перейти от учебных и пет-проектов к командной разработке, где каждый PR проходит код-ревью и доходит до живого продакшена.",
-      goalsTitle: "5 вещей, которые хочу прокачать на стажировке",
+        "Вы создаёте живые AI-продукты для пользователей на 20+ языках. Мне важно учиться на реальных задачах с наставником, проходить код-ревью и видеть, как мои PR работают у настоящих пользователей.",
+      goalsTitle: "5 фокусов роста на стажировке",
       goals: [
         {
-          title: "Продвинутый рабочий цикл с Claude Code",
-          detail: "Проектирование фич через CLAUDE.md, быстрое прототипирование, рефакторинг и автоматическая проверка перед PR.",
+          title: "Продвинутый рабочий процесс в Claude Code",
+          detail: "Дисциплина через CLAUDE.md, разбиение фич на проверяемые ветки и рефакторинг без регрессий.",
         },
         {
-          title: "Продуктовый Next.js + Vercel на 20+ языков",
-          detail: "Работа с i18n-архитектурой, производительностью App Router и выпуском изменений без регрессий.",
+          title: "Масштабируемый i18n в Next.js + Vercel",
+          detail: "Поддержка 20+ языков без разъехавшейся вёрстки, битых плейсхолдеров и медленной загрузки.",
         },
         {
-          title: "Надёжный бэкенд: Firebase, Trigger.dev и Stripe",
-          detail: "Асинхронные фоновые пайплайны, правила безопасности Firestore и аккуратная работа с платёжными вебхуками.",
+          title: "Прод-паттерны Firebase, Trigger.dev и Stripe",
+          detail: "Отказоустойчивые фоновые очереди, строгие Firestore Rules и идемпотентные вебхуки оплаты.",
         },
         {
-          title: "Зрелая Git-культура и Code Review",
-          detail: "Умение получать обратную связь от ментора, писать понятные PR-описания и быстро закрывать замечания.",
+          title: "Сильное Code Review и Git-коллаборация",
+          detail: "Быстрая и точная работа по комментариям техлида, понятные PR-описания.",
         },
         {
-          title: "Продуктовое мышление",
-          detail: "Оценивать задачу глазами конечного пользователя: где ему непонятно, что мешает и какая метрика вырастет.",
+          title: "Продуктовое мышление AI Product Engineer",
+          detail: "Проверять ценность каждой фичи глазами пользователя, а не только числом строк кода.",
         },
       ],
-      interestsTitle: "Личные интересы",
+      interestsTitle: "Интересы",
       interests: [
         "AI Product Engineering",
-        "Локализация и глобальный UX",
-        "AppSec и защита веб-приложений",
+        "Мультиязычный UX",
+        "AppSec & Web Auditing",
         "Баскетбол и армрестлинг",
       ],
+      contactBannerTitle: "Готов к созвону или тестовой задаче",
+      contactBannerSub: "Напишите в Telegram @yobxes или скопируйте почту в один клик.",
     },
     palette: {
-      placeholder: "Перейти к разделу, сменить язык или скопировать контакт...",
-      empty: "Ничего не найдено",
-      sectionsGroup: "Разделы",
-      languagesGroup: "Язык интерфейса",
-      actionsGroup: "Быстрые действия",
+      placeholder: "Перейти к разделу, переключить язык или открыть FunnelLens...",
+      empty: "Совпадений не найдено",
+      sectionsGroup: "Навигация",
+      languagesGroup: "Язык",
+      actionsGroup: "Действия",
       jumpPrefix: "Перейти:",
-      switchPrefix: "Переключить язык:",
+      switchPrefix: "Язык:",
       copyEmail: "Скопировать Email (tamerlanrakhim135@gmail.com)",
       copyTelegram: "Скопировать Telegram (@yobxes)",
       openGithub: "Открыть GitHub (github.com/Aspart7)",
-      closeHint: "ESC чтобы закрыть",
+      openFunnelLens: "Открыть живой FunnelLens (Vercel)",
+      closeHint: "ESC — закрыть",
     },
-    footer: "Сделано с помощью Next.js, TypeScript, Tailwind CSS и AI-инструментов · Темирлан Рахым, 2026",
+    footer: "Темирлан Рахым · Next.js 15, TypeScript, Tailwind CSS · 2026",
   },
+
   en: {
     nav: {
-      about: "About",
       projects: "Projects",
+      decisions: "Engineering",
       education: "Education",
       learning: "Goals",
       cmdHint: "Search",
     },
     hero: {
-      badge: "Applying for AI Developer Intern · SkyWhisper & MonoLotus",
+      badge: "AI Product & Security · 3rd-Year AITU",
       name: "Temirlan Rakhym",
-      headline:
-        "3rd-year Cybersecurity student shipping practical AI & web products fast.",
+      roleStatement:
+        "I design and ship practical AI web products with deterministic validation and security hygiene.",
       subheadline:
-        "Combining engineering discipline (Git branches, PRs, tests, web security) with modern AI-assisted development in Next.js, TypeScript, and Python.",
-      location: "Astana, Kazakhstan · Remote-ready",
+        "From multilingual Next.js conversion auditing with DOM-pinned findings to Dockerized services and Python HTTP security scanners — backed by tests and clean PR history.",
+      ctaProjects: "Explore projects",
       ctaGithub: "GitHub @Aspart7",
       ctaTelegram: "Telegram @yobxes",
       ctaCopyEmail: "Copy Email",
-      copiedEmail: "Email copied",
-      copiedTelegram: "Telegram @yobxes copied",
+      copiedEmail: "Copied tamerlanrakhim135@gmail.com",
+      copiedTelegram: "Copied Telegram @yobxes",
+      location: "Astana · Remote",
+      previewLabel: "Featured Case · Jump below to interact",
+      previewTitle: "FunnelLens — First-Screen Auditor",
+      previewScore: "68 / 100",
+      previewSampleNote: "Interactive LedgerLane sample — no login or API key needed",
+      previewAction: "Inspect interactive demo",
+    },
+    flagship: {
+      eyebrow: "Featured Case Study · Target Company Stack",
+      title: "FunnelLens — First-Screen Conversion & Copy Auditor",
+      subtitle:
+        "Captures a 1280×800 first screen and DOM anchor map, detects where visitors have to guess across 12 CRO rules, pins issues directly over the mockup, and proposes grounded Before/After hero copy.",
+      demoNote:
+        "Interactive example from the LedgerLane sample capture — works right here with zero signup or API key.",
+      openFullReport: "Open full report",
+      openLiveApp: "Open live FunnelLens",
+      viewGithub: "Code & PRs on GitHub",
+      pinsInstruction: "Select pins by click, tap, or keyboard ← → keys",
+      tabDemo: "Interactive Pins",
+      tabArchitecture: "Engineering Decisions",
+      originalLabel: "Original text on screen",
+      reasonLabel: "Why it hurts clarity",
+      replacementLabel: "Concrete replacement",
+      penaltyLabel: "penalty",
+      pins: [
+        {
+          number: 1,
+          ruleId: "hierarchy.rivals",
+          severity: "warning",
+          penalty: 10,
+          xPct: 6.25,
+          yPct: 55.5,
+          wPct: 34,
+          hPct: 6.5,
+          originalText: "“Start 14-day trial” vs. “Book a live call” (equal weight)",
+          title: "Two equally bright CTAs demand opposite commitments",
+          reason:
+            "Neither label clarifies which buyer size fits self-serve trial vs. sales call, causing decision friction.",
+          replacement:
+            "Keep one primary filled CTA (“Preview approval rules”) and demote the sales call to a text link for large teams.",
+        },
+        {
+          number: 2,
+          ruleId: "friction.fields",
+          severity: "warning",
+          penalty: 8,
+          xPct: 6.25,
+          yPct: 45.5,
+          wPct: 28,
+          hPct: 6,
+          originalText: "Work phone * (+1 555 014-2200)",
+          title: "Mandatory phone number before showing the product",
+          reason:
+            "Visitors wanting an instant sandbox tour stall when forced to provide a phone number suggesting a cold sales call.",
+          replacement:
+            "Remove the required phone input above the fold and keep only Work Email or a one-click sample flow.",
+        },
+        {
+          number: 3,
+          ruleId: "action.label",
+          severity: "warning",
+          penalty: 8,
+          xPct: 35.5,
+          yPct: 45.5,
+          wPct: 14.5,
+          hPct: 6,
+          originalText: "Continue",
+          title: "Button label “Continue” hides what happens next",
+          reason:
+            "Nothing below the input clarifies whether clicking launches an interactive preview, signup wall, or billing form.",
+          replacement:
+            "Rename “Continue” to “Open sample approval flow” so visitors know the exact next screen.",
+        },
+        {
+          number: 4,
+          ruleId: "proof.claim",
+          severity: "warning",
+          penalty: 6,
+          xPct: 6.25,
+          yPct: 14.5,
+          wPct: 26,
+          hPct: 4.5,
+          originalText: "3× faster monthly close for finance",
+          title: "Numeric claim “3× faster” has no baseline or case link",
+          reason:
+            "Finance buyers treat an unanchored multiplier without a comparison baseline as unsupported marketing copy.",
+          replacement:
+            "Add the concrete baseline (vs. spreadsheet email sign-offs) and a case link, or replace with verifiable workflow proof.",
+        },
+      ],
+      decisionsTitle: "Engineering Decisions Verified in Code",
+      decisions: [
+        {
+          id: "dom-pins",
+          title: "1. Grounded DOM Pin Anchoring (elementId + fallback)",
+          fileHint: "src/lib/auditor/rubric.ts · capture.ts",
+          summary:
+            "AI selects real captured DOM element IDs instead of guessing raw pixel coordinates.",
+          detail:
+            "Playwright captures a 1280×800 viewport and normalized percentage bounding boxes. If a model outputs an invalid elementId, normalizeAndScoreAudit falls back to the registered viewport anchor safely.",
+        },
+        {
+          id: "server-score",
+          title: "2. Deterministic Server Scoring Across 12 Rules",
+          fileHint: "src/lib/auditor/schema.ts · rubric.ts",
+          summary:
+            "The server computes final 0–100 scores and enforces schema invariants instead of trusting LLM arithmetic.",
+          detail:
+            "Each rule is penalized at most once, action.entry suppresses downstream CTA/hierarchy penalties, and payloads are checked with Zod .strict() mirroring the canonical JSON Schema.",
+        },
+        {
+          id: "ssrf-guard",
+          title: "3. SSRF Guard Across Entry URL & Subresources",
+          fileHint: "src/lib/auditor/url-safety.ts · capture.ts",
+          summary:
+            "Validates schemes, DNS resolution, and Playwright route requests before any network fetch completes.",
+          detail:
+            "Allows only http/https without embedded credentials; blocks localhost, *.internal, private/metadata IPv4 ranges, and hex-normalized IPv4-mapped IPv6 addresses like ::ffff:7f00:1.",
+        },
+      ],
+    },
+    otherProjects: {
+      title: "Other Projects & Experience",
+      subtitle: "Problem, concrete contribution, verified outcome, and repository link.",
+      taskLabel: "Task",
+      contributionLabel: "Contribution",
+      resultLabel: "Outcome",
+      openRepo: "Repository",
+      items: [
+        {
+          id: "web-auditor",
+          title: "Web Security Headers Auditor",
+          tag: "Security CLI · Python",
+          period: "2026",
+          task: "Audit baseline web HTTP security hygiene without heavy third-party dependencies.",
+          contribution:
+            "Built stdlib modules checking OWASP security headers, cookies, CORS reflection, and TLS plus local /vulnerable and /hardened demo targets.",
+          result: "Deterministic 0–100 (A+–F) score, HTML/JSON reports, and 4 passing unittest suites.",
+          stack: ["Python", "HTTP/TLS", "OWASP", "unittest"],
+          repoUrl: "https://github.com/Aspart7/web-security-auditor",
+        },
+        {
+          id: "tg-archiver",
+          title: "Telegram Audit Archiver",
+          tag: "Backend Service · Docker",
+          period: "2026",
+          task: "Provide reproducible message auditing for moderated Telegram chats with automatic retention limits.",
+          contribution:
+            "Architected Telethon + thread-safe SQLite storage, TTL expiration cleanup, HTML escaping, and non-root Dockerfile with env-only secrets.",
+          result: "Containerized audit pipeline verified with 4 unit tests covering persistence and TTL pruning.",
+          stack: ["Python", "Telethon", "SQLite", "Docker"],
+          repoUrl: "https://github.com/Aspart7/telegram-audit-archiver",
+        },
+        {
+          id: "decentrathon",
+          title: "Decentrathon 6.0 — Soup Kernel Challenge (Team Toak)",
+          tag: "AI Engineering · Astana Hub",
+          period: "Oct 2026",
+          task: "Speed up Qwen2 QLoRA fine-tuning and slash VRAM footprint on Kaggle T4 GPUs.",
+          contribution:
+            "Configured reproducible T4 benchmark runs and profiled execution time and peak GPU memory across optimization iterations.",
+          result: "Team achieved 1.72x speedup and 13.7x VRAM reduction (~1 GB) at preserved accuracy.",
+          stack: ["Python", "PyTorch", "QLoRA", "Qwen2"],
+        },
+        {
+          id: "college-intern",
+          title: "IT Support & AI Projects Intern — College of Management LLP",
+          tag: "Internship · Astana",
+          period: "Summer 2026",
+          task: "Keep an on-site AI lab reliable and organize academic grading workflows.",
+          contribution:
+            "Configured and maintained 10+ Windows workstations and corporate LLM accounts; structured grade datasets and assisted with syllabi.",
+          result: "Reliable lab workstation environments and clean tabular datasets.",
+          stack: ["Windows", "PowerShell", "LLM Tools", "Data Hygiene"],
+        },
+      ],
     },
     about: {
       title: "About me",
       paragraphs: [
-        "I am a 3rd-year undergraduate studying Cybersecurity in English at Astana IT University. I prefer turning ideas into live browser products rather than stopping at theory.",
-        "Over the past year I completed an IT Support & AI Projects internship, profiled QLoRA training at Decentrathon 6.0, and built public repositories spanning Next.js AI conversion auditing, Dockerized Python services, and OWASP security header scanning.",
+        "I am a 3rd-year undergraduate studying Cybersecurity in English at Astana IT University. I care about both sides of shipping: crisp product interfaces that feel effortless and strict engineering guarantees underneath.",
+        "I build rapidly with AI-assisted workflows (Antigravity, Claude Code), verify everything with unit tests and typechecks, and publish clean Pull Requests.",
       ],
       languagesTitle: "Languages",
       languages: [
@@ -365,109 +699,31 @@ export const PROFILE_CONTENT: Record<Locale, LocaleContent> = {
       ],
       beyondCodeTitle: "Beyond code",
       beyondCode: [
-        "Multilingual product UX across diverse markets",
+        "Multilingual SaaS UX & localization quality",
         "AITU varsity basketball & arm wrestling teams",
-        "Exploring AI-first engineering workflows",
-      ],
-    },
-    projectsSection: {
-      title: "Projects & Experience",
-      subtitle: "Public repositories with unit tests, clean Git PR history, and working demos.",
-      featuredBadge: "Built for company stack",
-      viewRepo: "View on GitHub",
-      items: [
-        {
-          id: "funnellens",
-          title: "FunnelLens — First-Screen Landing Conversion Auditor",
-          tag: "Product MVP · Next.js + i18n",
-          period: "Nov 2026",
-          featured: true,
-          summary:
-            "Audits landing page hero sections against a 12-rule CRO rubric, places clickable pins directly over page captures, and generates Before/After hero rewrites.",
-          highlights: [
-            "Strict 100-point rubric across 6 categories, Zod schema validation, and SSRF URL checks",
-            "Interactive DOM-coordinate pin canvas with 5-language UI (EN / RU / KK / ZH / ES)",
-            "Developed through structured Git feature branches, Pull Requests, and CI checks",
-          ],
-          stack: ["Next.js", "TypeScript", "Tailwind CSS", "Zod", "Vitest", "Firebase", "Trigger.dev", "Stripe"],
-          repoUrl: "https://github.com/Aspart7/funnellens",
-        },
-        {
-          id: "web-auditor",
-          title: "Web Security Headers Auditor",
-          tag: "Security CLI · Python",
-          period: "2026",
-          summary:
-            "Zero-dependency Python CLI auditing OWASP security headers, cookies, CORS reflection, and TLS configuration with 0–100 scoring and HTML/JSON reports.",
-          highlights: [
-            "Includes /vulnerable and /hardened demo targets for repeatable testing",
-            "Covered by unittest suite",
-          ],
-          stack: ["Python", "HTTP/TLS", "OWASP", "HTML/JSON", "unittest"],
-          repoUrl: "https://github.com/Aspart7/web-security-auditor",
-        },
-        {
-          id: "tg-archiver",
-          title: "Telegram Audit Archiver",
-          tag: "Backend Service · Docker",
-          period: "2026",
-          summary:
-            "Dockerized Python + Telethon + SQLite service for auditing moderated Telegram chats with automatic TTL retention cleanup.",
-          highlights: [
-            "Environment-only secrets, thread-safe SQLite storage, and non-root Dockerfile",
-            "Unit tests covering message persistence and TTL expiration",
-          ],
-          stack: ["Python", "Telethon", "SQLite", "Docker"],
-          repoUrl: "https://github.com/Aspart7/telegram-audit-archiver",
-        },
-        {
-          id: "decentrathon",
-          title: "Decentrathon 6.0 — Soup Kernel Challenge (Team Toak)",
-          tag: "AI Engineering · Astana Hub",
-          period: "Oct 2026",
-          summary:
-            "Configured Kaggle T4 benchmark runs and profiled runtime and VRAM usage for Qwen2 QLoRA fine-tuning.",
-          highlights: [
-            "Team achieved 1.72x speedup and 13.7x VRAM reduction (~1 GB VRAM) at preserved accuracy",
-          ],
-          stack: ["Python", "PyTorch", "QLoRA", "Qwen2", "Profiling"],
-        },
-        {
-          id: "college-intern",
-          title: "IT Support & AI Projects Intern — College of Management LLP",
-          tag: "Internship · Astana",
-          period: "Summer 2026",
-          summary:
-            "Configured and maintained 10+ Windows workstations and corporate LLM accounts in an AI lab; structured student grade datasets and assisted with syllabi.",
-          highlights: [
-            "Hands-on troubleshooting of software environments and workstation reliability",
-            "Used tabular workflows and LLM tools to clean and organize academic records",
-          ],
-          stack: ["Windows", "PowerShell", "LLM Tools", "Data Hygiene"],
-        },
       ],
     },
     educationSection: {
       title: "Education & Certificates",
-      subtitle: "English-taught Cybersecurity degree and verified technical credentials.",
+      subtitle: "English-taught Cybersecurity degree and verifiable credentials.",
       items: [
         {
           school: "Astana IT University (AITU)",
-          degree: "B.Sc. in Cybersecurity (English-taught program)",
+          degree: "B.Sc. in Cybersecurity (English-taught)",
           period: "2024 — June 2027 (3rd Year)",
-          note: "Core focus: web and network security, systems analysis, and applied AI development.",
+          note: "Focus on web & network security, systems analysis, and applied software development.",
         },
         {
           school: "Astana International University (AIU) × UIBE (Beijing)",
-          degree: "International Trade (Double-Degree Program, 1 Year)",
+          degree: "International Trade (Double-Degree, 1 Year)",
           period: "2023 — 2024",
-          note: "Completed first year with English and introductory Mandarin coursework before transferring to IT.",
+          note: "English & introductory Mandarin coursework prior to transferring to IT.",
         },
         {
-          school: "Astana Bilim-Innovation Lyceum for Gifted Boys (BIL)",
-          degree: "High School Diploma (STEM track)",
+          school: "Astana Bilim-Innovation Lyceum (BIL)",
+          degree: "High School Diploma (STEM)",
           period: "Class of 2023",
-          note: "Strong mathematics and English-medium STEM foundation.",
+          note: "Mathematics & sciences taught in English/Kazakh.",
         },
       ],
       certsTitle: "Verified Certificates",
@@ -476,132 +732,217 @@ export const PROFILE_CONTENT: Record<Locale, LocaleContent> = {
     },
     learningSection: {
       title: "What I Want to Learn at SkyWhisper & MonoLotus",
-      subtitle: "Focused skills I want to sharpen by shipping real features to users.",
-      whyTitle: "Why this team excites me",
+      subtitle: "Concrete engineering habits I want to sharpen by shipping real user features.",
+      whyTitle: "Why this team fits my focus",
       whyText:
-        "Building consumer SaaS products used in 20+ languages fits how I like to work: fast iteration, clear product thinking, and shipping real features into production through structured Git and code review.",
+        "Shipping consumer AI products across 20+ languages matches how I want to grow: fast iteration, mentored code review, and turning prototypes into resilient production features.",
       goalsTitle: "5 things I want to master during the internship",
       goals: [
         {
-          title: "Production workflows with Claude Code",
-          detail: "Using CLAUDE.md conventions, targeted sub-tasks, automated checks, and disciplined diffs.",
+          title: "Disciplined Claude Code workflows",
+          detail: "Using CLAUDE.md conventions, small PR slices, and automated verification before merge.",
         },
         {
-          title: "Multilingual Next.js + Vercel at scale",
-          detail: "Managing 20+ locales cleanly without layout breakage, broken placeholders, or slow bundles.",
+          title: "Multilingual Next.js + Vercel at 20+ locales",
+          detail: "Preventing copy overflow, broken placeholders, and layout regressions across scripts.",
         },
         {
-          title: "Reliable Firebase, Trigger.dev & Stripe flows",
-          detail: "Designing resilient background jobs, strict Firestore rules, and idempotent payment webhooks.",
+          title: "Production Firebase, Trigger.dev & Stripe",
+          detail: "Background job states, airtight Firestore rules, and idempotent payment webhook handlers.",
         },
         {
           title: "Code review & Git collaboration",
-          detail: "Writing crisp PR descriptions, responding rapidly to mentor feedback, and preventing regressions.",
+          detail: "Responding crisply to tech lead feedback and leaving clean audit trails.",
         },
         {
-          title: "AI Product Engineer mindset",
-          detail: "Measuring every feature by user clarity and real product impact rather than code complexity.",
+          title: "AI Product Engineer judgment",
+          detail: "Validating every feature by how clear and useful it is for first-time users.",
         },
       ],
       interestsTitle: "Interests",
       interests: [
         "AI Product Engineering",
         "Multilingual SaaS UX",
-        "Web Application Security",
+        "Web App Security",
         "Basketball & Arm Wrestling",
       ],
+      contactBannerTitle: "Ready for a quick call or starter task",
+      contactBannerSub: "Message @yobxes on Telegram or copy my email in one click.",
     },
     palette: {
-      placeholder: "Jump to a section, switch language, or copy contact...",
+      placeholder: "Jump to section, switch language, or open FunnelLens...",
       empty: "No matching command",
-      sectionsGroup: "Sections",
+      sectionsGroup: "Navigation",
       languagesGroup: "Language",
-      actionsGroup: "Quick actions",
+      actionsGroup: "Actions",
       jumpPrefix: "Go to:",
-      switchPrefix: "Switch language:",
+      switchPrefix: "Language:",
       copyEmail: "Copy Email (tamerlanrakhim135@gmail.com)",
       copyTelegram: "Copy Telegram (@yobxes)",
       openGithub: "Open GitHub (github.com/Aspart7)",
+      openFunnelLens: "Open live FunnelLens (Vercel)",
       closeHint: "ESC to close",
     },
-    footer: "Built with Next.js, TypeScript, Tailwind CSS, and AI tooling · Temirlan Rakhym, 2026",
+    footer: "Temirlan Rakhym · Next.js 15, TypeScript, Tailwind CSS · 2026",
   },
+
   kk: {
     nav: {
-      about: "Мен туралы",
       projects: "Жобалар",
+      decisions: "Шешімдер",
       education: "Білім",
       learning: "Мақсаттар",
       cmdHint: "Іздеу",
     },
     hero: {
-      badge: "AI Developer Intern · SkyWhisper & MonoLotus өтінімі",
+      badge: "AI Product & Security · AITU 3-курс",
       name: "Темірлан Рахым",
-      headline:
-        "Жұмыс істейтін AI және веб-өнімдерді жылдам жасайтын киберқауіпсіздік 3-курс студенті.",
+      roleStatement:
+        "Нақты ережелері мен қауіпсіздік қорғанысы бар AI және веб-өнімдерді продакшнға дейін жеткіземін.",
       subheadline:
-        "Инженерлік тәртіпті (Git тармақтары, PR, тесттер, веб-қауіпсіздік) Next.js, TypeScript және Python арқылы заманауи AI-әзірлеумен ұштастырамын.",
-      location: "Астана, Қазақстан · Қашықтан жұмыс",
+        "DOM координаттары бар көптілді Next.js аудитінен бастап Docker сервистері мен HTTP қауіпсіздік сканеріне дейін — тесттерімен және таза Git PR тарихымен.",
+      ctaProjects: "Жобаларды көру",
       ctaGithub: "GitHub @Aspart7",
       ctaTelegram: "Telegram @yobxes",
       ctaCopyEmail: "Email көшіру",
-      copiedEmail: "Email көшірілді",
+      copiedEmail: "tamerlanrakhim135@gmail.com көшірілді",
       copiedTelegram: "Telegram @yobxes көшірілді",
+      location: "Астана · Қашықтан",
+      previewLabel: "Басты кейс · Төменде интерактивті талдау",
+      previewTitle: "FunnelLens — бірінші экран аудиті",
+      previewScore: "68 / 100",
+      previewSampleNote: "LedgerLane үлгісі: кірусіз және API-кілтсіз жұмыс істейді",
+      previewAction: "Интерактивті үлгіні ашу",
     },
-    about: {
-      title: "Мен туралы қысқаша",
-      paragraphs: [
-        "Astana IT University университетінде ағылшын тілінде «Киберқауіпсіздік» мамандығы бойынша 3-курста оқимын. Идеяны теорияда қалдырмай, браузерде тексеруге болатын нақты өнімге айналдырғанды ұнатамын.",
-        "Соңғы жылы IT-қолдау және AI-зертханада тәжірибеден өттім, Decentrathon 6.0 хакатонында QLoRA өнімділігін өлшеуге қатыстым және Next.js пен Python тілінде ашық жобалар жасадым.",
-      ],
-      languagesTitle: "Тілдер",
-      languages: [
-        { name: "Орыс тілі", level: "Ана тілі (C2)" },
-        { name: "Қазақ тілі", level: "Жетік (C1)" },
-        { name: "Ағылшын тілі", level: "Upper-Intermediate (B2)" },
-        { name: "Қытай тілі", level: "Бастапқы (AIU / UIBE)" },
-      ],
-      beyondCodeTitle: "Кодтан тыс қызығушылықтар",
-      beyondCode: [
-        "Көптілді өнімдердің UX және локализация сапасы",
-        "AITU баскетбол және армрестлинг құрама командалары",
-        "AI құралдарымен әзірлеу жылдамдығын арттыру",
-      ],
-    },
-    projectsSection: {
-      title: "Жобалар мен тәжірибе",
-      subtitle: "Тесттері, таза Git тарихы және нақты нәтижесі бар репозиторийлер.",
-      featuredBadge: "Компания стегіне сай жоба",
-      viewRepo: "GitHub-та ашу",
-      items: [
+    flagship: {
+      eyebrow: "Басты кейс · Компания стегі",
+      title: "FunnelLens — Лендингтің бірінші экранының AI-аудиторы",
+      subtitle:
+        "1280×800 бірінші экран мен DOM картасын түсіріп, 12 ереже бойынша келушіні ойландыратын тұстарға пин қояды және «Дейін / Кейін» нұсқасын ұсынады.",
+      demoNote:
+        "Төмендегі «LedgerLane» үлгісі тікелей осында тіркелусіз және API-кілтсіз жұмыс істейді.",
+      openFullReport: "Толық есепті ашу",
+      openLiveApp: "FunnelLens ашу",
+      viewGithub: "GitHub коды мен PR",
+      pinsInstruction: "Пиндерді басу, түрту немесе ← → пернелерімен таңдаңыз",
+      tabDemo: "Интерактивті пиндер",
+      tabArchitecture: "Инженерлік шешімдер",
+      originalLabel: "Экрандағы бастапқы мәтін",
+      reasonLabel: "Ескерту себебі",
+      replacementLabel: "Нақты алмастыру",
+      penaltyLabel: "айыппұл",
+      pins: [
         {
-          id: "funnellens",
-          title: "FunnelLens — Лендингтің бірінші экранын тексеретін AI-аудитор",
-          tag: "Product MVP · Next.js + i18n",
-          period: "Қараша 2026",
-          featured: true,
-          summary:
-            "Лендингтің бірінші экранын 12 өнімдік ереже бойынша талдап, скриншот үстіне нүктелі ескертулер қояды және «Дейін / Кейін» нұсқасын ұсынады.",
-          highlights: [
-            "100 балдық қатаң бағалау жүйесі (6 санат, Zod схемасы, SSRF қорғанысы)",
-            "5 тілді интерфейс (EN / RU / KK / ZH / ES) және интерактивті пин-канвас",
-            "Бөлек Git тармақтары, Pull Request және CI тексерулері арқылы жасалған",
-          ],
-          stack: ["Next.js", "TypeScript", "Tailwind CSS", "Zod", "Vitest", "Firebase", "Trigger.dev", "Stripe"],
-          repoUrl: "https://github.com/Aspart7/funnellens",
+          number: 1,
+          ruleId: "hierarchy.rivals",
+          severity: "warning",
+          penalty: 10,
+          xPct: 6.25,
+          yPct: 55.5,
+          wPct: 34,
+          hPct: 6.5,
+          originalText: "«Start 14-day trial» және «Book a live call»",
+          title: "Бірдей жарқын екі батырма әртүрлі әрекетке шақырады",
+          reason:
+            "Қай командаға триал, ал қайсысына қоңырау керек екені жазылмаған — пайдаланушы таңдау алдында кідіреді.",
+          replacement:
+            "Бір негізгі батырманы («Preview approval rules») қалдырып, қоңырауды ірі командалар үшін мәтіндік сілтемеге ауыстыру.",
         },
+        {
+          number: 2,
+          ruleId: "friction.fields",
+          severity: "warning",
+          penalty: 8,
+          xPct: 6.25,
+          yPct: 45.5,
+          wPct: 28,
+          hPct: 6,
+          originalText: "Work phone * (+1 555 014-2200)",
+          title: "Өнімді көрсетпей тұрып міндетті телефон сұралады",
+          reason:
+            "Келуші демо көргісі келеді, бірақ міндетті телефон нөмірі сату қоңырауынан сақтанып кетіп қалуға итермелейді.",
+          replacement:
+            "Бірінші экраннан міндетті телефон өрісін алып тастап, тек жұмыс email-ін қалдыру.",
+        },
+        {
+          number: 3,
+          ruleId: "action.label",
+          severity: "warning",
+          penalty: 8,
+          xPct: 35.5,
+          yPct: 45.5,
+          wPct: 14.5,
+          hPct: 6,
+          originalText: "Continue",
+          title: "«Continue» жазуы басқаннан кейін не болатынын жасырады",
+          reason:
+            "Батырма интерактивті демо ма, тіркелу ме, әлде төлем беті ме екенін көрсетпейді.",
+          replacement:
+            "«Continue» сөзін «Open sample approval flow» деп нақтылау.",
+        },
+        {
+          number: 4,
+          ruleId: "proof.claim",
+          severity: "warning",
+          penalty: 6,
+          xPct: 6.25,
+          yPct: 14.5,
+          wPct: 26,
+          hPct: 4.5,
+          originalText: "3× faster monthly close for finance",
+          title: "«3× faster» уәдесінде салыстыру негізі мен сілтеме жоқ",
+          reason:
+            "Қаржы командалары немен салыстырылғаны көрсетілмеген сандарға сенбейді.",
+          replacement:
+            "Нақты салыстыру негізін немесе тексерілетін кейс сілтемесін қосу.",
+        },
+      ],
+      decisionsTitle: "Кодпен расталған инженерлік шешімдер",
+      decisions: [
+        {
+          id: "dom-pins",
+          title: "1. AI пиндерін нақты DOM элементтеріне байлау",
+          fileHint: "src/lib/auditor/rubric.ts · capture.ts",
+          summary: "AI координатты ойдан таппайды, DOM түсіріліміндегі бар elementId таңдайды.",
+          detail:
+            "Playwright 1280×800 өлшемде пайыздық координаттарды түсіреді; белгісіз ID болса, сервер пинді viewport-қа қауіпсіз ауыстырады.",
+        },
+        {
+          id: "server-score",
+          title: "2. 12 ереже бойынша score есептеу серверде орындалады",
+          fileHint: "src/lib/auditor/schema.ts · rubric.ts",
+          summary: "Балл 0–100 AI жауабынан тәуелсіз серверде саналады.",
+          detail:
+            "Бір ереже бір рет қана шегеріледі, action.entry бар кезде қосымша CTA ережелері өшіріледі, ал жауап Zod .strict() арқылы тексеріледі.",
+        },
+        {
+          id: "ssrf-guard",
+          title: "3. URL және ресурс сұраныстарын SSRF-тен қорғау",
+          fileHint: "src/lib/auditor/url-safety.ts · capture.ts",
+          summary: "Желілік сұраныс алдында домен, DNS және Playwright маршруттары тексеріледі.",
+          detail:
+            "Тек http/https рұқсат етіледі; localhost, *.internal, жеке/метадерек IP және ::ffff:7f00:1 бұғатталады.",
+        },
+      ],
+    },
+    otherProjects: {
+      title: "Басқа жобалар мен тәжірибе",
+      subtitle: "Мақсаты, менің үлесім, нақты нәтиже және кодқа сілтеме.",
+      taskLabel: "Тапсырма",
+      contributionLabel: "Үлесім",
+      resultLabel: "Нәтиже",
+      openRepo: "Репозиторий",
+      items: [
         {
           id: "web-auditor",
           title: "Web Security Headers Auditor",
           tag: "Security CLI · Python",
           period: "2026",
-          summary:
-            "OWASP HTTP тақырыптарын, cookie жалаушаларын, CORS және TLS параметрлерін тексеретін тәуелсіз Python CLI құралы.",
-          highlights: [
-            "/vulnerable және /hardened оқу стендтерімен бірге жеткізіледі",
-            "unittest модульдік тесттерімен қамтылған",
-          ],
-          stack: ["Python", "HTTP/TLS", "OWASP", "HTML/JSON", "unittest"],
+          task: "Сыртқы тәуелділіксіз HTTP қауіпсіздік тақырыптарын тексеретін жеңіл CLI құру.",
+          contribution:
+            "OWASP тақырыптарын, cookie жалаушаларын, CORS пен TLS тексеретін модульдер және /vulnerable мен /hardened стендтерін жаздым.",
+          result: "0–100 баға, HTML/JSON есептер және 4 unittest тесті.",
+          stack: ["Python", "HTTP/TLS", "OWASP", "unittest"],
           repoUrl: "https://github.com/Aspart7/web-security-auditor",
         },
         {
@@ -609,12 +950,10 @@ export const PROFILE_CONTENT: Record<Locale, LocaleContent> = {
           title: "Telegram Audit Archiver",
           tag: "Backend Service · Docker",
           period: "2026",
-          summary:
-            "Модерацияланатын чаттарды TTL мерзімі бойынша мұрағаттайтын Python + Telethon + SQLite Docker сервисі.",
-          highlights: [
-            "Құпия кілттер .env арқылы беріледі, қауіпсіз SQLite және non-root Dockerfile",
-            "Деректер сақтау логикасына арналған тесттер жазылған",
-          ],
+          task: "Модерацияланатын чаттарды TTL мерзімімен мұрағаттайтын контейнер сервис жасау.",
+          contribution:
+            "Telethon + ағынға қауіпсіз SQLite, TTL тазалау, HTML экрандау және env кілттерімен non-root Dockerfile іске асырдым.",
+          result: "4 модульдік тестпен расталған Docker сервисі.",
           stack: ["Python", "Telethon", "SQLite", "Docker"],
           repoUrl: "https://github.com/Aspart7/telegram-audit-archiver",
         },
@@ -623,49 +962,60 @@ export const PROFILE_CONTENT: Record<Locale, LocaleContent> = {
           title: "Decentrathon 6.0 — Soup Kernel Challenge (Team Toak)",
           tag: "AI Engineering · Astana Hub",
           period: "Қазан 2026",
-          summary:
-            "Kaggle T4 ортасында Qwen2 моделін QLoRA арқылы оқыту жылдамдығы мен бейнежад шығынын профильдеу.",
-          highlights: [
-            "Команда дәлдікті сақтай отырып 1.72× жылдамдатуға және VRAM-ды 13.7× азайтуға (~1 ГБ) қол жеткізді",
-          ],
-          stack: ["Python", "PyTorch", "QLoRA", "Qwen2", "Benchmarking"],
+          task: "Kaggle T4 GPU-да Qwen2 QLoRA оқытуын жылдамдату және VRAM азайту.",
+          contribution: "T4 ортасында іске қосуларды баптап, уақыт пен VRAM шығынын профильдедім.",
+          result: "Команда дәлдікті сақтай отырып 1.72× жылдамдату және 13.7× VRAM үнемдеуге (~1 ГБ) жетті.",
+          stack: ["Python", "PyTorch", "QLoRA", "Qwen2"],
         },
         {
           id: "college-intern",
           title: "IT-қолдау және AI-жобалар тағылымдамашысы — «Басқару колледжі» ЖШС",
           tag: "Тағылымдама · Астана",
           period: "Жаз 2026",
-          summary:
-            "AI-зертханада 10+ Windows компьютерін және корпоративтік LLM аккаунттарын баптау, үлгерім кестелері мен силлабустарды жүйелеу.",
-          highlights: [
-            "Жұмыс орталарын жылдам диагностикалау және қолдау",
-            "Деректерді кестелеуде LLM құралдарын қолдану",
-          ],
-          stack: ["Windows", "PowerShell", "LLM Tools", "Data Tables"],
+          task: "AI зертханасындағы компьютерлерді және оқу кестелерін жүйелі тәртіпке келтіру.",
+          contribution: "10+ Windows станциясын және LLM аккаунттарын баптап, баға датасеттерін реттедім.",
+          result: "Тұрақты зертхана инфрақұрылымы және реттелген оқу деректері.",
+          stack: ["Windows", "PowerShell", "LLM Tools", "Data Hygiene"],
         },
       ],
     },
+    about: {
+      title: "Өзім туралы",
+      paragraphs: [
+        "Astana IT University университетінде ағылшын тілінде кибербезопасность (3-курс) оқимын. Пайдаланушыға түсінікті интерфейс пен астындағы қатаң инженерлік тексерістерді бірге құрғанды ұнатамын.",
+        "AI құралдарымен жылдам прототиптеп, оларды тест, типтеу және таза PR арқылы нақты өнімге жеткіземін.",
+      ],
+      languagesTitle: "Тілдер",
+      languages: [
+        { name: "Орыс тілі", level: "Ана тілі (C2)" },
+        { name: "Қазақ тілі", level: "Жетік (C1)" },
+        { name: "Ағылшын тілі", level: "Upper-Intermediate (B2)" },
+        { name: "Қытай тілі", level: "Бастапқы (AIU / UIBE)" },
+      ],
+      beyondCodeTitle: "Кодтан тыс",
+      beyondCode: ["Көптілді өнімдердің UX сапасы", "AITU баскетбол және армрестлинг құрамалары"],
+    },
     educationSection: {
       title: "Білім және сертификаттар",
-      subtitle: "Ағылшын тіліндегі бакалавриат және расталған курстар.",
+      subtitle: "Ағылшын тіліндегі бакалавриат және расталған сілтемелер.",
       items: [
         {
           school: "Astana IT University (AITU)",
           degree: "Бакалавриат: Киберқауіпсіздік (ағылшын тілінде)",
           period: "2024 — Маусым 2027 (3-курс)",
-          note: "Негізгі бағыттар: желілік және веб-қауіпсіздік, жүйелерді талдау, қолданбалы AI.",
+          note: "Веб және желілік қауіпсіздік, жүйелер талдауы және қолданбалы әзірлеу.",
         },
         {
           school: "Astana International University (AIU) × UIBE (Бейжің)",
-          degree: "Халықаралық сауда (қос диплом бағдарламасы, 1 курс)",
+          degree: "Халықаралық сауда (Double-Degree, 1-курс)",
           period: "2023 — 2024",
-          note: "IT бағытына ауысқанға дейін ағылшын және қытай тілдері бойынша дайындық.",
+          note: "IT бағытына ауысу алдында ағылшын және қытай тілдері базасы.",
         },
         {
           school: "Астана БІЛІМ-ИННОВАЦИЯ лицейі (БИЛ)",
-          degree: "Орта білім (жаратылыстану-математика бағыты)",
+          degree: "Орта білім (STEM)",
           period: "2023 түлегі",
-          note: "Тереңдетілген математика және ағылшын тілі базасы.",
+          note: "Математика және жаратылыстану пәндері.",
         },
       ],
       certsTitle: "Расталған сертификаттар",
@@ -674,131 +1024,201 @@ export const PROFILE_CONTENT: Record<Locale, LocaleContent> = {
     },
     learningSection: {
       title: "SkyWhisper және MonoLotus командасында не үйренгім келеді",
-      subtitle: "Тағылымдама барысында меңгергім келетін нақты инженерлік дағдылар.",
-      whyTitle: "Неліктен дәл осы команда қызықтырады",
+      subtitle: "Нақты релиздер арқылы жетілдіргім келетін дағдылар.",
+      whyTitle: "Неліктен бұл команда",
       whyText:
-        "20+ тілдегі нақты өнімдерге функцияларды жылдам жеткізу тәсілі маған өте жақын. Оқу жобаларынан нақты продакшн мен жүйелі код-ревью процесіне өткім келеді.",
-      goalsTitle: "Меңгергім келетін 5 бағыт",
+        "20+ тілдегі өнімдерді жылдам дамыту маған жақын. Ментормен бірге код-ревью өтіп, нақты пайдаланушыларға фича жеткізгім келеді.",
+      goalsTitle: "Тағылымдамадағы 5 мақсат",
       goals: [
         {
-          title: "Claude Code-пен жүйелі жұмыс",
-          detail: "CLAUDE.md ережелері, тапсырмаларды бөлу және PR алдындағы автоматты тексерулер.",
+          title: "Claude Code жүйелі жұмысы",
+          detail: "CLAUDE.md ережелерімен шағын PR жасап, автоматты тексерулермен сапаны ұстау.",
         },
         {
           title: "20+ тілдегі Next.js + Vercel",
-          detail: "Көптілді интерфейстерде орналасу қателерінсіз жылдам релиз жасау.",
+          detail: "Көптілді макеттерде мәтін қиылмауын және жылдам жұмысты қамтамасыз ету.",
         },
         {
           title: "Firebase, Trigger.dev және Stripe",
-          detail: "Фондық тапсырмалар, қауіпсіз Firestore ережелері және сенімді төлем вебхуктары.",
+          detail: "Фондық кезектер, Firestore қауіпсіздік ережелері және идемпотентті вебхуктар.",
         },
         {
-          title: "Git және Code Review мәдениеті",
-          detail: "Ментор пікірлерін жылдам қабылдап, сапалы Pull Request жазу.",
+          title: "Code Review және Git мәдениеті",
+          detail: "Ескертулерді тез түзету және таза PR сипаттамасын жазу.",
         },
         {
           title: "AI Product Engineer көзқарасы",
-          detail: "Шешімдерді пайдаланушыға беретін нақты пайдасымен өлшеу.",
+          detail: "Әр шешімді пайдаланушыға беретін нақты пайдасымен өлшеу.",
         },
       ],
       interestsTitle: "Қызығушылықтар",
-      interests: [
-        "AI Product Engineering",
-        "Көптілді өнім дизайны",
-        "Веб-қауіпсіздік",
-        "Баскетбол және армрестлинг",
-      ],
+      interests: ["AI Product Engineering", "Көптілді UX", "Веб-қауіпсіздік", "Баскетбол және армрестлинг"],
+      contactBannerTitle: "Қоңырауға немесе сынақ тапсырмасына дайынмын",
+      contactBannerSub: "Telegram @yobxes арқылы жазыңыз немесе поштаны көшіріп алыңыз.",
     },
     palette: {
-      placeholder: "Бөлімге өту, тілді ауыстыру немесе байланыс көшіру...",
-      empty: "Ештеңе табылмады",
+      placeholder: "Бөлімге өту, тілді ауыстыру немесе FunnelLens ашу...",
+      empty: "Сәйкестік табылмады",
       sectionsGroup: "Бөлімдер",
       languagesGroup: "Тіл",
-      actionsGroup: "Жылдам әрекеттер",
+      actionsGroup: "Әрекеттер",
       jumpPrefix: "Өту:",
-      switchPrefix: "Тілді ауыстыру:",
+      switchPrefix: "Тіл:",
       copyEmail: "Email көшіру (tamerlanrakhim135@gmail.com)",
       copyTelegram: "Telegram көшіру (@yobxes)",
       openGithub: "GitHub ашу (github.com/Aspart7)",
-      closeHint: "Жабу үшін ESC",
+      openFunnelLens: "FunnelLens ашу (Vercel)",
+      closeHint: "ESC — жабу",
     },
-    footer: "Next.js, TypeScript, Tailwind CSS және AI құралдарымен жасалған · Темірлан Рахым, 2026",
+    footer: "Темірлан Рахым · Next.js 15, TypeScript, Tailwind CSS · 2026",
   },
+
   zh: {
     nav: {
-      about: "关于我",
-      projects: "项目经历",
-      education: "教育背景",
-      learning: "学习目标",
+      projects: "项目",
+      decisions: "架构方案",
+      education: "教育",
+      learning: "目标",
       cmdHint: "搜索",
     },
     hero: {
-      badge: "申请 AI Product 开发实习生 · SkyWhisper & MonoLotus",
+      badge: "AI 产品与安全方向 · AITU 大三",
       name: "Temirlan Rakhym（铁木尔兰）",
-      headline: "网络安全大三学生，擅长用 AI 工具快速打造可上线的 Web 产品。",
+      roleStatement: "设计并交付可上线的 AI Web 产品，兼顾清晰产品规则与工程安全底线。",
       subheadline:
-        "将工程规范（Git 分支、Pull Request、测试、安全审计）与 Next.js、TypeScript 和 Python 现代 AI 开发相结合。",
-      location: "哈萨克斯坦阿斯塔纳 · 支持远程",
+        "涵盖带 DOM 图钉定位的多语言 Next.js 落地页诊断工具，以及 Docker 与 Python 安全扫描 CLI，均配单元测试与规范 PR。",
+      ctaProjects: "查看项目案例",
       ctaGithub: "GitHub @Aspart7",
       ctaTelegram: "Telegram @yobxes",
       ctaCopyEmail: "复制邮箱",
-      copiedEmail: "已复制邮箱",
+      copiedEmail: "已复制 tamerlanrakhim135@gmail.com",
       copiedTelegram: "已复制 @yobxes",
+      location: "阿斯塔纳 · 远程",
+      previewLabel: "核心案例 · 点击下方交互体验",
+      previewTitle: "FunnelLens — 首屏转化诊断",
+      previewScore: "68 / 100",
+      previewSampleNote: "LedgerLane 示例报告 — 无需登录或 API 密钥",
+      previewAction: "体验交互式案例",
     },
-    about: {
-      title: "个人简介",
-      paragraphs: [
-        "目前就读于阿斯塔纳 IT 大学（AITU）网络安全英文授课本科三年级。我喜欢把想法快速落地为可以直接在浏览器体验的真实产品，而不仅停留在概念上。",
-        "过去一年中，我完成了 IT 支持与 AI 实验室实习，参加了 Decentrathon 6.0 黑客松的 AI 工程赛道，并开源了 Next.js 落地页诊断工具与 Python 安全/后端项目。",
-      ],
-      languagesTitle: "语言能力",
-      languages: [
-        { name: "俄语", level: "母语 (C2)" },
-        { name: "哈萨克语", level: "流利 (C1)" },
-        { name: "英语", level: "中高级 (B2)" },
-        { name: "中文", level: "基础（曾就读 AIU / UIBE 项目）" },
-      ],
-      beyondCodeTitle: "技术之外",
-      beyondCode: [
-        "面向全球多语言用户的产品 UX 与本地化体验",
-        "AITU 校篮球队与掰手腕校队成员",
-        "探索高效 AI 辅助开发工作流",
-      ],
-    },
-    projectsSection: {
-      title: "项目与实践",
-      subtitle: "具备单元测试、规范 Git PR 记录和可运行演示的公开代码仓库。",
-      featuredBadge: "契合目标团队技术栈",
-      viewRepo: "查看 GitHub",
-      items: [
+    flagship: {
+      eyebrow: "重点项目 · 契合目标公司技术栈",
+      title: "FunnelLens — 首屏转化与文案诊断工具",
+      subtitle:
+        "捕获 1280×800 首屏与 DOM 节点坐标，依据 12 项转化规则在截图上定位让访客犹豫的区域，并生成有据可依的首屏改写。",
+      demoNote: "下方 LedgerLane 示例可在页面内直接交互，无需注册或 API 密钥。",
+      openFullReport: "打开完整报告",
+      openLiveApp: "访问在线 FunnelLens",
+      viewGithub: "GitHub 源码与 PR",
+      pinsInstruction: "支持点击、触屏或方向键 ← → 切换图钉",
+      tabDemo: "交互图钉演示",
+      tabArchitecture: "工程实现细节",
+      originalLabel: "页面原文案",
+      reasonLabel: "扣分原因",
+      replacementLabel: "具体修改方案",
+      penaltyLabel: "扣分",
+      pins: [
         {
-          id: "funnellens",
-          title: "FunnelLens — 落地页首屏转化率 AI 诊断工具",
-          tag: "产品 MVP · Next.js + 多语言",
-          period: "2026年11月",
-          featured: true,
-          summary:
-            "依据 12 项转化规则评估落地页首屏，在页面截图上精准标出问题图钉，并生成首屏文案修改对比。",
-          highlights: [
-            "6 大维度 100 分严格评分体系、Zod 校验与 SSRF URL 安全防护",
-            "基于 DOM 坐标的交互式图钉画布与 5 种语言界面（EN / RU / KK / ZH / ES）",
-            "严格遵循 Git 功能分支、Pull Request 与 CI 检查流程",
-          ],
-          stack: ["Next.js", "TypeScript", "Tailwind CSS", "Zod", "Vitest", "Firebase", "Trigger.dev", "Stripe"],
-          repoUrl: "https://github.com/Aspart7/funnellens",
+          number: 1,
+          ruleId: "hierarchy.rivals",
+          severity: "warning",
+          penalty: 10,
+          xPct: 6.25,
+          yPct: 55.5,
+          wPct: 34,
+          hPct: 6.5,
+          originalText: "“Start 14-day trial” 与 “Book a live call”（权重相同）",
+          title: "两个同等醒目的按钮指向冲突的承诺路径",
+          reason: "未说明自助试用与预约演示分别适合哪类团队，导致决策停顿。",
+          replacement: "保留一个主填充按钮（Open sample approval flow），将预约通话弱化为次级链接。",
         },
+        {
+          number: 2,
+          ruleId: "friction.fields",
+          severity: "warning",
+          penalty: 8,
+          xPct: 6.25,
+          yPct: 45.5,
+          wPct: 28,
+          hPct: 6,
+          originalText: "Work phone * (+1 555 014-2200)",
+          title: "展示产品前强制要求填写工作电话",
+          reason: "访客只想先体验审批流，却被要求留电话号码，担心销售冷电话而离开。",
+          replacement: "移除首屏表单中的必填电话，仅保留工作邮箱或免登录直通示例。",
+        },
+        {
+          number: 3,
+          ruleId: "action.label",
+          severity: "warning",
+          penalty: 8,
+          xPct: 35.5,
+          yPct: 45.5,
+          wPct: 14.5,
+          hPct: 6,
+          originalText: "Continue",
+          title: "按钮文案 “Continue” 隐藏了点击后的下一步",
+          reason: "访客无法预判点击后会进入沙盒体验、长注册表单还是付费页。",
+          replacement: "将 “Continue” 改为 “Open sample approval flow”，明确告知下一步界面。",
+        },
+        {
+          number: 4,
+          ruleId: "proof.claim",
+          severity: "warning",
+          penalty: 6,
+          xPct: 6.25,
+          yPct: 14.5,
+          wPct: 26,
+          hPct: 4.5,
+          originalText: "3× faster monthly close for finance",
+          title: "“3× faster” 缺乏对比基准与来源链接",
+          reason: "未标明对比对象（例如对比邮件/表格审批）且无案例链接，财务买方难以采信。",
+          replacement: "补充具体对比基准与案例链接，或替换为可核验的工作流细节。",
+        },
+      ],
+      decisionsTitle: "经代码验证的工程决策",
+      decisions: [
+        {
+          id: "dom-pins",
+          title: "1. AI 标注锚定真实 DOM 坐标",
+          fileHint: "src/lib/auditor/rubric.ts · capture.ts",
+          summary: "模型从捕获的 DOM 映射中选择有效 elementId，而非凭空猜测像素点。",
+          detail:
+            "Playwright 在 1280×800 视口采集节点百分比矩形框；若返回无效 ID，normalizeAndScoreAudit 会回退至已注册的 viewport 锚点。",
+        },
+        {
+          id: "server-score",
+          title: "2. 服务端按 12 条规则确定性计算总分",
+          fileHint: "src/lib/auditor/schema.ts · rubric.ts",
+          summary: "总分 0–100 与规则互斥逻辑完全在 TypeScript 服务端执行。",
+          detail:
+            "同一规则最多扣一次分；若存在 action.entry 则自动抑制下游 CTA 文案/层级规则；JSON 经 Zod .strict() 严格校验。",
+        },
+        {
+          id: "ssrf-guard",
+          title: "3. 入口 URL 与浏览器子请求 SSRF 防护",
+          fileHint: "src/lib/auditor/url-safety.ts · capture.ts",
+          summary: "所有目标 URL、DNS 解析与 Playwright 子请求都会在放行前进行内网拦截检查。",
+          detail:
+            "仅允许无凭据的 http/https，拦截 localhost、*.internal、私有/云元数据 IP 以及 ::ffff:7f00:1 等映射地址。",
+        },
+      ],
+    },
+    otherProjects: {
+      title: "其他项目与实践经历",
+      subtitle: "涵盖问题背景、个人负责部分、可验证成果及仓库链接。",
+      taskLabel: "任务",
+      contributionLabel: "我的贡献",
+      resultLabel: "成果",
+      openRepo: "查看仓库",
+      items: [
         {
           id: "web-auditor",
           title: "Web Security Headers Auditor",
           tag: "安全工具 · Python CLI",
           period: "2026",
-          summary:
-            "零第三方依赖的 Python 安全检查工具，用于评估 OWASP HTTP 安全头、Cookie、CORS 与 TLS 配置并输出 HTML/JSON 报告。",
-          highlights: [
-            "内置 /vulnerable 与 /hardened 演示环境以便验证效果",
-            "包含完整 unittest 单元测试",
-          ],
-          stack: ["Python", "HTTP/TLS", "OWASP", "HTML/JSON", "unittest"],
+          task: "打造零第三方依赖的 HTTP 安全响应头与基础配置检查工具。",
+          contribution: "使用 Python 标准库实现 OWASP 头部、Cookie 标记、CORS 反射与 TLS 检测，并附 /vulnerable 与 /hardened 对照靶场。",
+          result: "0–100 评分、HTML/JSON 报告以及 4 项通过的 unittest 测试。",
+          stack: ["Python", "HTTP/TLS", "OWASP", "unittest"],
           repoUrl: "https://github.com/Aspart7/web-security-auditor",
         },
         {
@@ -806,12 +1226,9 @@ export const PROFILE_CONTENT: Record<Locale, LocaleContent> = {
           title: "Telegram Audit Archiver",
           tag: "后端服务 · Docker",
           period: "2026",
-          summary:
-            "基于 Python + Telethon + SQLite 的容器化审计归档服务，支持群组消息记录与 TTL 自动清理。",
-          highlights: [
-            "环境变量管理密钥、线程安全 SQLite 读写与非 root Dockerfile",
-            "覆盖核心存储与清理逻辑的单元测试",
-          ],
+          task: "为合规管理的群聊构建可复现的审计归档与过期自动清理服务。",
+          contribution: "设计 Telethon + 线程安全 SQLite 存储、TTL 清理、HTML 转义及无 root 权限 Dockerfile。",
+          result: "可通过环境变量开箱运行的容器服务，含 4 项持久化与过期单元测试。",
           stack: ["Python", "Telethon", "SQLite", "Docker"],
           repoUrl: "https://github.com/Aspart7/telegram-audit-archiver",
         },
@@ -820,44 +1237,60 @@ export const PROFILE_CONTENT: Record<Locale, LocaleContent> = {
           title: "Decentrathon 6.0 — Soup Kernel 挑战赛 (Team Toak)",
           tag: "AI 工程 · Astana Hub",
           period: "2026年10月",
-          summary:
-            "在 Kaggle T4 环境配置与分析 Qwen2 QLoRA 微调的运行耗时与显存占用。",
-          highlights: ["团队在保持精度的前提下实现 1.72× 加速与 13.7× 显存压缩（约 1 GB VRAM）"],
-          stack: ["Python", "PyTorch", "QLoRA", "Qwen2", "Benchmarking"],
+          task: "在显存受限的 Kaggle T4 上加速 Qwen2 的 QLoRA 微调并降低显存占用。",
+          contribution: "配置可复现的 T4 评测运行，统计迭代过程中的耗时与峰值显存。",
+          result: "团队在保持精度的前提下实现 1.72× 加速与 13.7× 显存压缩（约 1 GB）。",
+          stack: ["Python", "PyTorch", "QLoRA", "Qwen2"],
         },
         {
           id: "college-intern",
           title: "IT 支持与 AI 项目实习生 — College of Management LLP",
           tag: "实习 · 阿斯塔纳",
           period: "2026年暑期",
-          summary:
-            "维护 10+ 台 Windows 工作站与 AI 实验室企业账号，整理成绩数据表并协助课程大纲结构化。",
-          highlights: ["快速定位日常软硬件环境故障", "结合 LLM 工具提高表格与文档整理效率"],
-          stack: ["Windows", "PowerShell", "LLM Tools", "Data Tables"],
+          task: "维护 AI 实验室终端稳定性并整理教学评估表格数据。",
+          contribution: "维护 10+ 台 Windows 工作站与企业 LLM 账号，整理成绩数据并协助课程大纲结构化。",
+          result: "保障实验室稳定运行并产出规整的数据表。",
+          stack: ["Windows", "PowerShell", "LLM Tools", "Data Hygiene"],
         },
       ],
     },
+    about: {
+      title: "关于我",
+      paragraphs: [
+        "目前在阿斯塔纳 IT 大学（AITU）全英文网络安全专业就读大三。我关注产品界面清晰度与底层工程确定性的结合。",
+        "擅长借助 AI 工程工作流（Antigravity、Claude Code）快速落地功能，并通过单元测试与规范 Pull Request 保障质量。",
+      ],
+      languagesTitle: "语言",
+      languages: [
+        { name: "俄语", level: "母语 (C2)" },
+        { name: "哈萨克语", level: "流利 (C1)" },
+        { name: "英语", level: "中高级 (B2)" },
+        { name: "中文", level: "基础 (AIU / UIBE)" },
+      ],
+      beyondCodeTitle: "技术之外",
+      beyondCode: ["多语言产品 UX 细节", "AITU 校篮球队与掰手腕校队"],
+    },
     educationSection: {
-      title: "教育与认证",
-      subtitle: "英文授课网络安全本科及已验证的技术证书。",
+      title: "教育与证书",
+      subtitle: "全英文网络安全本科及可核验的在线证书。",
       items: [
         {
           school: "Astana IT University (AITU)",
-          degree: "网络安全理学学士（全英文授课）",
+          degree: "网络安全理学学士（全英文）",
           period: "2024 — 2027年6月（大三）",
-          note: "主修网络与 Web 安全、系统分析及应用型 AI 开发。",
+          note: "侧重网络与 Web 安全、系统分析及应用开发。",
         },
         {
           school: "Astana International University (AIU) × 对外经济贸易大学 (UIBE)",
           degree: "国际贸易（双学位项目一年级）",
           period: "2023 — 2024",
-          note: "转入 IT 专业前修读英语与基础中文课程。",
+          note: "转入 IT 前夯实英文与基础中文能力。",
         },
         {
           school: "阿斯塔纳 BIL 理科英才中学",
           degree: "高中毕业（数理方向）",
           period: "2023届",
-          note: "扎实的数学与英文理科基础。",
+          note: "扎实数理与英文授课背景。",
         },
       ],
       certsTitle: "可核验证书",
@@ -867,48 +1300,35 @@ export const PROFILE_CONTENT: Record<Locale, LocaleContent> = {
     learningSection: {
       title: "我希望在 SkyWhisper & MonoLotus 提升的方向",
       subtitle: "围绕真实产品交付制定的实习成长目标。",
-      whyTitle: "为什么期待加入你们的团队",
-      whyText:
-        "你们面向 20+ 种语言用户快速迭代消费级产品的方式非常吸引我。我希望能从个人项目进阶到真正的团队协作，通过严格的代码评审把功能稳健地发布到生产环境。",
-      goalsTitle: "实习期间最想掌握的 5 项能力",
+      whyTitle: "为什么期待加入团队",
+      whyText: "为全球 20+ 语言用户快速上线消费级 AI 功能与我期望的成长方式高度一致：在导师 Code Review 中把原型稳健推向生产。",
+      goalsTitle: "实习期间的 5 项重点目标",
       goals: [
-        {
-          title: "高效的 Claude Code 工程实践",
-          detail: "通过 CLAUDE.md 约束规范、拆分任务与自动化验证来稳定提效。",
-        },
-        {
-          title: "面向 20+ 语言的 Next.js + Vercel",
-          detail: "确保多语言界面不破版、文案占位符准确，并保持优异的加载性能。",
-        },
-        {
-          title: "Firebase、Trigger.dev 与 Stripe 实战",
-          detail: "异步后台任务流水线、Firestore 权限规则及幂等支付回调处理。",
-        },
-        {
-          title: "严谨的 Git 与 Code Review 习惯",
-          detail: "写出清晰的 PR 说明，快速响应导师建议，减少线上回归问题。",
-        },
-        {
-          title: "AI Product Engineer 产品思维",
-          detail: "从真实用户视角判断问题，用结果与体验衡量开发价值。",
-        },
+        { title: "规范的 Claude Code 工作流", detail: "结合 CLAUDE.md、小粒度 PR 与自动验证持续提效。" },
+        { title: "20+ 语言的 Next.js + Vercel", detail: "确保多语言排版不溢出、占位符准确且首屏流畅。" },
+        { title: "Firebase、Trigger.dev 与 Stripe 实战", detail: "后台任务状态机、Firestore 权限规则及幂等支付回调。" },
+        { title: "Code Review 与 Git 协作", detail: "快速吸收导师建议并提交清晰严谨的 Pull Request。" },
+        { title: "AI Product Engineer 产品直觉", detail: "以首次访问用户的理解成本和实用价值来衡量功能。" },
       ],
-      interestsTitle: "个人兴趣",
-      interests: ["AI 产品工程", "多语言 UX", "Web 应用安全", "篮球与掰手腕"],
+      interestsTitle: "兴趣方向",
+      interests: ["AI 产品工程", "多语言 UX", "Web 安全", "篮球与掰手腕"],
+      contactBannerTitle: "随时可以语音沟通或完成试做任务",
+      contactBannerSub: "欢迎在 Telegram 联系 @yobxes 或一键复制邮箱。",
     },
     palette: {
-      placeholder: "跳转板块、切换语言或复制联系方式...",
-      empty: "未找到匹配命令",
-      sectionsGroup: "页面板块",
-      languagesGroup: "切换语言",
+      placeholder: "跳转板块、切换语言或打开 FunnelLens...",
+      empty: "无匹配结果",
+      sectionsGroup: "导航",
+      languagesGroup: "语言",
       actionsGroup: "快捷操作",
       jumpPrefix: "跳转:",
       switchPrefix: "语言:",
       copyEmail: "复制邮箱 (tamerlanrakhim135@gmail.com)",
       copyTelegram: "复制 Telegram (@yobxes)",
       openGithub: "打开 GitHub (github.com/Aspart7)",
+      openFunnelLens: "打开在线 FunnelLens (Vercel)",
       closeHint: "按 ESC 关闭",
     },
-    footer: "基于 Next.js、TypeScript、Tailwind CSS 与 AI 工具构建 · Temirlan Rakhym, 2026",
+    footer: "Temirlan Rakhym · Next.js 15, TypeScript, Tailwind CSS · 2026",
   },
 };

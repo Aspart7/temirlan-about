@@ -1,8 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Search, ArrowRight, Globe, Copy, ExternalLink, X } from "lucide-react";
-import { LOCALES, type Locale, type LocaleContent } from "@/data/profile";
+import { ArrowRight, Copy, ExternalLink, Globe, Search, X } from "lucide-react";
+import {
+  LIVE_FUNNELLENS_URL,
+  LOCALES,
+  type Locale,
+  type LocaleContent,
+} from "@/data/profile";
 
 interface CommandPaletteProps {
   open: boolean;
@@ -46,11 +51,11 @@ export function CommandPalette({
 
     const sectionItems: CommandAction[] = [
       {
-        id: "sec-about",
+        id: "sec-funnellens",
         group: content.palette.sectionsGroup,
-        label: `${content.palette.jumpPrefix} ${content.nav.about}`,
+        label: `${content.palette.jumpPrefix} FunnelLens`,
         kind: "section",
-        run: () => jump("about"),
+        run: () => jump("funnellens-case"),
       },
       {
         id: "sec-projects",
@@ -78,7 +83,9 @@ export function CommandPalette({
     const localeItems: CommandAction[] = LOCALES.map((item) => ({
       id: `lang-${item.code}`,
       group: content.palette.languagesGroup,
-      label: `${content.palette.switchPrefix} ${item.native} (${item.label})${item.code === locale ? " ✓" : ""}`,
+      label: `${content.palette.switchPrefix} ${item.native} (${item.label})${
+        item.code === locale ? " ✓" : ""
+      }`,
       kind: "locale",
       run: () => {
         onSelectLocale(item.code);
@@ -108,6 +115,16 @@ export function CommandPalette({
         },
       },
       {
+        id: "act-fl",
+        group: content.palette.actionsGroup,
+        label: content.palette.openFunnelLens,
+        kind: "action",
+        run: () => {
+          window.open(LIVE_FUNNELLENS_URL, "_blank", "noopener,noreferrer");
+          onClose();
+        },
+      },
+      {
         id: "act-gh",
         group: content.palette.actionsGroup,
         label: content.palette.openGithub,
@@ -127,7 +144,8 @@ export function CommandPalette({
     if (!q) return actions;
     return actions.filter(
       (item) =>
-        item.label.toLowerCase().includes(q) || item.group.toLowerCase().includes(q)
+        item.label.toLowerCase().includes(q) ||
+        item.group.toLowerCase().includes(q)
     );
   }, [actions, query]);
 
@@ -135,29 +153,30 @@ export function CommandPalette({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-zinc-950/40 px-4 pt-24 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-[#111214]/45 px-4 pt-20 backdrop-blur-sm"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
+      aria-label="Command palette"
     >
       <div
-        className="w-full max-w-lg overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-2xl"
+        className="w-full max-w-lg overflow-hidden rounded-2xl border border-[#e3e1da] bg-white shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center gap-3 border-b border-zinc-200 px-4 py-3">
-          <Search className="h-4 w-4 text-zinc-400" />
+        <div className="flex items-center gap-3 border-b border-[#eceae4] px-4 py-3">
+          <Search className="h-4 w-4 text-[#575b64]" />
           <input
             type="text"
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={content.palette.placeholder}
-            className="w-full bg-transparent text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none"
+            className="w-full bg-transparent text-sm text-[#111214] placeholder:text-[#7c818c] focus:outline-none"
           />
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-[#575b64] hover:bg-[#f6f5f1] hover:text-[#111214]"
             aria-label="Close command palette"
           >
             <X className="h-4 w-4" />
@@ -166,7 +185,7 @@ export function CommandPalette({
 
         <div className="max-h-80 overflow-y-auto p-2">
           {filtered.length === 0 ? (
-            <p className="px-3 py-6 text-center text-sm text-zinc-500">
+            <p className="px-3 py-6 text-center text-sm text-[#575b64]">
               {content.palette.empty}
             </p>
           ) : (
@@ -175,21 +194,21 @@ export function CommandPalette({
                 key={item.id}
                 type="button"
                 onClick={item.run}
-                className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm text-zinc-800 transition hover:bg-indigo-50 hover:text-indigo-900"
+                className="flex min-h-[44px] w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm text-[#111214] transition hover:bg-[#f0f2ff] hover:text-[#2f45ff]"
               >
                 <span className="flex items-center gap-2.5">
                   {item.kind === "locale" ? (
-                    <Globe className="h-4 w-4 text-indigo-500" />
-                  ) : item.id === "act-gh" ? (
-                    <ExternalLink className="h-4 w-4 text-zinc-400" />
+                    <Globe className="h-4 w-4 text-[#2f45ff]" />
+                  ) : item.id === "act-gh" || item.id === "act-fl" ? (
+                    <ExternalLink className="h-4 w-4 text-[#575b64]" />
                   ) : item.kind === "action" ? (
-                    <Copy className="h-4 w-4 text-zinc-400" />
+                    <Copy className="h-4 w-4 text-[#575b64]" />
                   ) : (
-                    <ArrowRight className="h-4 w-4 text-zinc-400" />
+                    <ArrowRight className="h-4 w-4 text-[#575b64]" />
                   )}
                   <span>{item.label}</span>
                 </span>
-                <span className="text-[11px] font-medium text-zinc-400">
+                <span className="font-mono text-[11px] font-medium text-[#7c818c]">
                   {item.group}
                 </span>
               </button>
@@ -197,7 +216,7 @@ export function CommandPalette({
           )}
         </div>
 
-        <div className="flex items-center justify-between border-t border-zinc-100 bg-zinc-50 px-4 py-2 text-[11px] text-zinc-500">
+        <div className="flex items-center justify-between border-t border-[#eceae4] bg-[#f8f7f4] px-4 py-2 text-[11px] text-[#575b64]">
           <span>Temirlan Rakhym</span>
           <span className="font-mono">{content.palette.closeHint}</span>
         </div>
